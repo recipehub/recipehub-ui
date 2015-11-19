@@ -18,4 +18,9 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url('', include('social.apps.django_app.urls', namespace='social')),
+    """TO-DO  these shouold be links to templates/ dir"""
+    url(r'^$', 'django_social_app.views.login'),
+    url(r'^home/$', 'django_social_app.views.home'),
+    url(r'^logout/$', 'django_social_app.views.logout'),
 ]
