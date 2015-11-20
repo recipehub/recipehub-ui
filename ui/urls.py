@@ -15,7 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.generic import TemplateView
+
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^mylogin/', TemplateView.as_view(template_name='login.html')),
+    url(r'^playground/', TemplateView.as_view(template_name='playground.html')),
+    url('', include('social.apps.django_app.urls', namespace='social')),
 ]
+
+    # """TO-DO  these shouold be links to templates/ dir"""
