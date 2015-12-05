@@ -23,6 +23,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
+    'ui.recipehub',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -62,7 +63,7 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.google.GoogleOAuth2',
     'social.backends.twitter.TwitterOAuth',
     'django.contrib.auth.backends.ModelBackend',
-	'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
 )
 
@@ -90,3 +91,4 @@ STATICFILES_DIRS = (
 )
 
 STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR,  'static')

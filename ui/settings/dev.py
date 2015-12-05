@@ -11,3 +11,5 @@ DATABASES = {
     }
 }
 
+
+RECIPEHUB_MS_URL = "http://localhost:5000"
