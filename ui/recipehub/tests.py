@@ -1,5 +1,5 @@
 from django.test import TestCase
-from data import (get_recipe, ping, new_recipe, update_recipe, get_recipes_for_users)
+from data import (get_recipe, ping, new_recipe, update_recipe, get_recipes_for_users, fork_recipe)
 
 
 class TestPing(TestCase):
@@ -37,6 +37,14 @@ class TestGetRecipesForUsers(TestCase):
         recipe_users = list(set([recipe['user_id'] for recipe in recipes]))
         self.assertEqual(sorted(user_ids), sorted(recipe_users))
 
+class TestForkRecipe(TestCase):
+
+    def test_fork_recipe(self):
+        recipe = new_recipe(sunny_side_up['title'], 22, sunny_side_up['ingredients'], sunny_side_up['steps'])
+        forked_recipe = fork_recipe(22, recipe['id'])
+        self.assertNotEqual(recipe['id'], forked_recipe['id'])
+        self.assertEqual(recipe['data']['id'], forked_recipe['data']['id'])
+        self.assertEqual(recipe['id'], forked_recipe['fork_of_id'])
 
 sunny_side_up = {
     # "id": 1,

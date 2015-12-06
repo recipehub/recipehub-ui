@@ -13,8 +13,10 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+from django.conf import settings
 from django.contrib import admin
+from django.conf.urls import include, url
+from django.conf.urls.static import static
 from django.views.generic import TemplateView
 
 
@@ -23,6 +25,4 @@ urlpatterns = [
     url(r'^mylogin/', TemplateView.as_view(template_name='login.html')),
     url(r'^playground/', TemplateView.as_view(template_name='playground.html')),
     url('', include('social.apps.django_app.urls', namespace='social')),
-]
-
-    # """TO-DO  these shouold be links to templates/ dir"""
+]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
