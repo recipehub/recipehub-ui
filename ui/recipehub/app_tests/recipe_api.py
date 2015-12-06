@@ -1,7 +1,9 @@
 from django.test import TestCase
 from ui.recipehub.models import Ingredient
+from ui.recipehub.utils import get_detailed_recipe
 from ui.recipehub.data import (get_recipe, clean, new_recipe, update_recipe, get_recipes_for_users, fork_recipe)
 from django.contrib.auth.models import User
+from pprint import pprint
 
 
 class TestInserts(TestCase):
@@ -14,6 +16,16 @@ class TestInserts(TestCase):
         self.assertGreater(Ingredient.objects.count(), 0)
         self.assertGreater(get_recipes_for_users([User.objects.get(username="john").id]), 0)
 
+class TestDetailedRecipe(TestCase):
+
+    def setUp(self):
+        insert_users()
+        insert_ingredients()
+        insert_recipes()
+
+    def test_detailed_recipe(self):
+        for recipe in get_recipes_for_users([User.objects.get(username="john").id]):
+            self.assertIn('nutrition', get_detailed_recipe(recipe))
 
 def insert_ingredients():
     for ingredient  in ingredients:
@@ -77,6 +89,14 @@ ingredients = [
         "protein": 3,
         "calories": 25
     },
+    {
+        "name": "Water",
+        "unit_of_measurement": "ml",
+        "fat": 0,
+        "carbohydrate": 0,
+        "protein": 0,
+        "calories": 0
+    },
 ]
 
 def get_recipes():
@@ -97,7 +117,25 @@ def get_recipes():
                 "Add salt and close the lid",
                 "Once done serve in plate"
             ]
-        }
+        },
+        {
+            "title": "Boiled eggs",
+            "user_id": User.objects.get(username="john").id,
+            "ingredients": {
+                Ingredient.objects.get(name="Water").id: 0,
+                Ingredient.objects.get(name="Salt").id: 0,
+                Ingredient.objects.get(name="Eggs").id: 2,
+            },
+            "steps": [
+                "Bring water to boil in pan",
+                "Drop eggs",
+                "Wait for 15 minutes",
+                "Leave the pan with heat off for 15 minutes",
+                "Wash the eggs in cold water",
+                "Peel the eggs",
+                "Cut and sprinkle salt"
+            ]
+        },
     ]
 
 users = [
