@@ -1,6 +1,6 @@
 from django.test import TestCase
-from ui.recipehub.models import Ingredient
-from ui.recipehub.utils import get_detailed_recipe
+from ui.recipehub.models import Ingredient, Rating
+from ui.recipehub.utils import get_detailed_recipe, set_rating, get_rating, RatingException
 from ui.recipehub.data import (get_recipe, clean, new_recipe, update_recipe, get_recipes_for_users, fork_recipe)
 from django.contrib.auth.models import User
 from pprint import pprint
@@ -17,6 +17,51 @@ class TestInserts(TestCase):
         self.assertGreater(get_recipes_for_users([User.objects.get(username="john").id]), 0)
 
 class TestDetailedRecipe(TestCase):
+
+    def setUp(self):
+        insert_users()
+        insert_ingredients()
+        insert_recipes()
+
+    def test_detailed_recipe(self):
+        for recipe in get_recipes_for_users([User.objects.get(username="john").id]):
+            self.assertIn('nutrition', get_detailed_recipe(recipe))
+
+class TestRating(TestCase):
+
+    def setUp(self):
+        insert_users()
+        insert_ingredients()
+        insert_recipes()
+        self.john = User.objects.get(username="john")
+        self.jane = User.objects.get(username="jane")
+        self.jude = User.objects.get(username="jude")
+        self.recipe = get_recipes_for_users([self.john.id])[0]
+
+    def test_set_rating_own_recipe(self):
+        with self.assertRaises(RatingException):
+            set_rating(self.recipe['id'], self.john.id, 4)
+
+    def test_rating_range(self):
+        with self.assertRaises(RatingException):
+            set_rating(self.recipe['id'], self.jane.id, 6)
+
+        with self.assertRaises(RatingException):
+            set_rating(self.recipe['id'], self.jane.id, -1)
+
+    def test_multiple_rating(self):
+        set_rating(self.recipe['id'], self.jane.id, 3)
+        set_rating(self.recipe['id'], self.jane.id, 2)
+        self.assertEqual(Rating.objects.count(), 1)
+
+    def test_avg_rating(self):
+        set_rating(self.recipe['id'], self.jane.id, 3)
+        set_rating(self.recipe['id'], self.jude.id, 2)
+        self.assertEqual(get_rating(self.recipe['id']), 2.5)
+
+
+
+class TestTopFive(TestCase):
 
     def setUp(self):
         insert_users()
@@ -148,5 +193,10 @@ users = [
         "jane",
         "jane@example.com",
         "password"
-    ]
+    ],
+    [
+        "jude",
+        "jude@example.com",
+        "password"
+    ],
 ]

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Avg
 from .models import Ingredient, Follow, Rating, Comment
+from .data import get_recipe
 from pprint import pprint
 from copy import deepcopy
 
@@ -33,6 +34,20 @@ def get_rating(recipe_id):
     ret = Rating.objects.filter(recipe_id=recipe_id).values("recipe_id").annotate(average = Avg("rating"))
     if ret:
         return ret[0]['average']
+
+def set_rating(recipe_id, user_id, rating):
+    if not rating >= 0 or not rating <=5:
+        raise RatingException
+    if get_recipe(recipe_id)['user_id'] == user_id:
+        raise RatingException
+    rating_obj = Rating.objects.filter(recipe_id=recipe_id, user_id=user_id).first()
+    if not rating_obj:
+        rating_obj = Rating(recipe_id=recipe_id, user_id=user_id)
+    rating_obj.rating = rating
+    rating_obj.save()
+
+class RatingException(Exception):
+    pass
 
 def get_detailed_nutrition(ingredients):
     nutrition_dict = {"fat" : 0, "carbohydrate" : 0, "protein" : 0, "calories" : 0}
