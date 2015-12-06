@@ -65,6 +65,14 @@ def get_detailed_nutrition(ingredients):
 def get_recipe(recipe_id):
     return get_detailed_recipe(_get_recipe(recipe_id))
 
+def get_user_dict(user_id):
+    user = User.objects.get(pk=user_id)
+    return {
+        "username": user.username,
+        "id": user_id,
+        "email": user.email
+    }
+
 def get_detailed_recipe(recipe):
     recipe = deepcopy(recipe)
     recipe.update(recipe['data'])
@@ -73,4 +81,5 @@ def get_detailed_recipe(recipe):
     recipe['nutrition'] = get_detailed_nutrition(recipe['ingredients'])
     recipe['ingredients'] = get_detailed_ingredients(recipe['ingredients'])
     recipe['rating'] = get_rating(recipe['id'])
+    recipe['user'] = get_user_dict(recipe['user_id'])
     return recipe

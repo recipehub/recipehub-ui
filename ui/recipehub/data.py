@@ -34,7 +34,6 @@ def get_recipes_for_users(user_ids):
      return r.json()
 
 def fork_recipe(user_id, recipe_id):
-    print user_id
     r = requests.post(settings.RECIPEHUB_MS_URL + '/fork/{}/'.format(recipe_id), data=json.dumps({
         'user_id': user_id,
     }))
