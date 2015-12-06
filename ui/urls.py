@@ -23,6 +23,11 @@ from django.views.generic import TemplateView
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^mylogin/', TemplateView.as_view(template_name='login.html')),
-    url(r'^playground/', TemplateView.as_view(template_name='playground.html')),
+    url(r'', TemplateView.as_view(template_name='index.html')),
     url('', include('social.apps.django_app.urls', namespace='social')),
-]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
+
+if settings.DEBUG is False:   #if DEBUG is True it will be served automatically
+    urlpatterns += patterns('',
+            url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+    )
