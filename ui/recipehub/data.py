@@ -43,3 +43,6 @@ def fork_recipe(user_id, recipe_id):
 
 def ping():
     return requests.get(settings.RECIPEHUB_MS_URL + '/ping').json()
+
+def clean():
+    return requests.get(settings.RECIPEHUB_MS_URL + '/clean')
