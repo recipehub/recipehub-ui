@@ -42,8 +42,8 @@ class Rating(models.Model):
         return u'recipe:' + unicode(self.recipe_id) + u' user:' + unicode(self.user) + u' rating:' + unicode(self.rating)
 
     @classmethod
-    def get_top_five(self):
-        return Rating.objects.values("recipe_id").annotate(average = Avg("rating")).order_by('-average')[:5]
+    def get_top(self,number):
+        return Rating.objects.values("recipe_id").annotate(rating=Avg("rating")).order_by('-rating')[:number]
 
 class Comment(models.Model):
 

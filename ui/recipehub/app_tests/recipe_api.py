@@ -1,6 +1,6 @@
 from django.test import TestCase
 from ui.recipehub.models import Ingredient, Rating
-from ui.recipehub.utils import get_detailed_recipe, set_rating, get_rating, RatingException
+from ui.recipehub.utils import get_detailed_recipe, set_rating, get_rating, RatingException, get_top
 from ui.recipehub.data import (get_recipe, clean, new_recipe, update_recipe, get_recipes_for_users, fork_recipe)
 from django.contrib.auth.models import User
 from pprint import pprint
@@ -60,17 +60,26 @@ class TestRating(TestCase):
         self.assertEqual(get_rating(self.recipe['id']), 2.5)
 
 
-
 class TestTopFive(TestCase):
 
     def setUp(self):
         insert_users()
         insert_ingredients()
         insert_recipes()
+        self.john = User.objects.get(username="john")
+        self.jane = User.objects.get(username="jane")
+        self.jude = User.objects.get(username="jude")
+        self.recipe = get_recipes_for_users([self.john.id])[0]
 
-    def test_detailed_recipe(self):
-        for recipe in get_recipes_for_users([User.objects.get(username="john").id]):
-            self.assertIn('nutrition', get_detailed_recipe(recipe))
+    def test_duplicate(self):
+        set_rating(self.recipe['id'], self.jane.id, 3)
+        set_rating(self.recipe['id'], self.jude.id, 2)
+        self.assertEquals(len(Rating.get_top(5)), 1)
+
+    def test_detailed(self):
+        set_rating(self.recipe['id'], self.jane.id, 3)
+        self.assertEquals(len(Rating.get_top(5)), 1)
+        self.assertIn('title', get_top()[0])
 
 def insert_ingredients():
     for ingredient  in ingredients:
