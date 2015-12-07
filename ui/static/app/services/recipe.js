@@ -11,5 +11,10 @@
                     }
                 });
             };
+
+            this.getRecipe = function (id) {
+                return $http.get(recipePrefix + id + '/');
+            };
+
         }]);
 })();
