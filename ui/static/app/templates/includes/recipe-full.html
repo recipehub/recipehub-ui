@@ -1,0 +1,52 @@
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">{{ recipe.title }}</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-divider></md-divider>
+
+    <md-subheader class="md-no-sticky">Nutrition</md-subheader>
+    <md-list-item>
+        <div class="md-list-item-text">
+            <p>Calories</p>
+            <p class="md-secondary">{{ recipe.nutrition.calories }} kcal</p>
+        </div>
+    </md-list-item>
+    <md-list-item>
+        <div class="md-list-item-text">
+            <p>Carbohydrates</p>
+            <p class="md-secondary">{{ recipe.nutrition.carbohydrate }} g</p>
+        </div>
+    </md-list-item>
+    <md-list-item>
+        <div class="md-list-item-text">
+            <p>Protein</p>
+            <p class="md-secondary">{{ recipe.nutrition.protein }} g</p>
+        </div>
+    </md-list-item>
+    <md-list-item>
+        <div class="md-list-item-text">
+            <p>Fat</p>
+            <p class="md-secondary">{{ recipe.nutrition.fat }} g</p>
+        </div>
+    </md-list-item>
+    <md-divider></md-divider>
+
+    <md-subheader class="md-no-sticky">Ingredients</md-subheader>
+    <md-list-item ng-repeat="ingredient in recipe.ingredients">
+        <div class="md-list-item-text">
+            <p>{{ ingredient.name }}</p>
+            <p class="md-secondary">{{ ingredient.amount? ingredient.amount: '' }} {{ ingredient.unit_of_measurement }}</p>
+        </div>
+    </md-list-item>
+    <md-divider></md-divider>
+
+    <md-subheader class="md-no-sticky">Steps</md-subheader>
+
+    <md-list-item ng-repeat="step in recipe.steps">
+        <div class="md-list-item-text">
+            <strong>{{ $index + 1 }}.</strong>  {{ step }}
+        </div>
+    </md-list-item>
+</md-card>

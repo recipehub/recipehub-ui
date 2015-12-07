@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('recipehub', ['ngMaterial', 'ngRoute'])
+        .module('recipehub', ['ngMaterial', 'ngRoute', 'angular-sortable-view'])
         .config(function($mdIconProvider, $mdThemingProvider, $routeProvider) {
 
             $mdIconProvider

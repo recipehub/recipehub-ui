@@ -4,6 +4,8 @@
             $recipeService.getRecipe($routeParams.id)
                 .then(function(response) {
                     $scope.recipe = response.data;
+                    console.log(response.data)
                 });
+            $scope.modelArray = [1, 2, 3, 4]
         }]);
 })();

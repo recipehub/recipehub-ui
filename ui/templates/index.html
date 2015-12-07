@@ -10,6 +10,7 @@
 
         <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
         <link rel="stylesheet" href="/static/bower_components/angular-material/angular-material.css"/>
+        <link rel="stylesheet" href="/static/app/app.css"/>
 
         <!--         <style type="text/css">
              /**
@@ -24,21 +25,24 @@
 
     <body ng-app="recipehub">
         <div ng-controller="PageController">
-        <md-toolbar class="md-whiteframe-z1" layout="row" layout-align="center center">
-                <h3>RecipeHub</h3>
-        </md-toolbar>
-        <div ng-view>
-        </div>
-        </div>
-        <script type="text/javascript" src="/static/bower_components/angular/angular.js"></script>
-        <script type="text/javascript" src="/static/bower_components/angular-animate/angular-animate.js"></script>
-        <script type="text/javascript" src="/static/bower_components/angular-aria/angular-aria.js"></script>
-        <script type="text/javascript" src="/static/bower_components/angular-material/angular-material.js"></script>
-        <script type="text/javascript" src="/static/bower_components/angular-route/angular-route.js"></script>
-        <script type="text/javascript" src="/static/app/app.js"></script>
-        <script type="text/javascript" src="/static/app/controllers/page.js"></script>
-        <script type="text/javascript" src="/static/app/controllers/home.js"></script>
-        <script type="text/javascript" src="/static/app/controllers/recipe.js"></script>
-        <script type="text/javascript" src="/static/app/services/recipe.js"></script>
+            <md-toolbar class="md-whiteframe-z1" layout="row" layout-align="center center">
+                <h3 ng-click="go('/')"">RecipeHub</h3>
+            </md-toolbar>
+            <div layout="row">
+                <div flex></div>
+                <div ng-view flex></div>
+                <div flex></div>
+            </div>
+            <script type="text/javascript" src="/static/bower_components/angular/angular.js"></script>
+            <script type="text/javascript" src="/static/bower_components/angular-animate/angular-animate.js"></script>
+            <script type="text/javascript" src="/static/bower_components/angular-aria/angular-aria.js"></script>
+            <script type="text/javascript" src="/static/bower_components/angular-material/angular-material.js"></script>
+            <script type="text/javascript" src="/static/bower_components/angular-route/angular-route.js"></script>
+            <script type="text/javascript" src="/static/bower_components/angular-sortable-view/src/angular-sortable-view.js"></script>
+            <script type="text/javascript" src="/static/app/app.js"></script>
+            <script type="text/javascript" src="/static/app/controllers/page.js"></script>
+            <script type="text/javascript" src="/static/app/controllers/home.js"></script>
+            <script type="text/javascript" src="/static/app/controllers/recipe.js"></script>
+            <script type="text/javascript" src="/static/app/services/recipe.js"></script>
     </body>
 </html>

@@ -8,3 +8,10 @@ class RecipeSerializer(serializers.Serializer):
     ingredients = serializers.JSONField()
     nutrition = serializers.JSONField()
     steps = serializers.JSONField()
+
+class CommentSerializer(serializers.Serializer):
+    user = serializers.JSONField()
+    id = serializers.IntegerField()
+    recipe_id = serializers.IntegerField()
+    text = serializers.TextField()
+    timestamp = serializers.DateTimeField()
