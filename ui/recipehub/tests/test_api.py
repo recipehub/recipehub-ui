@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .test_utils import insert_users, insert_recipes, insert_ingredients, get_recipes
 from ..utils import set_rating
 from ..data import get_recipes_for_users
+from ..models import Comment, Rating
 from pprint import pprint
 factory = APIRequestFactory()
 
@@ -24,6 +25,7 @@ class TestAPIRecipeList(TestCase):
         resp = self.client.get('/api/v1/recipe/?top_five=1').data
         self.assertEqual(len(resp), 2)
 
+
 class TestAPIRecipeDetail(TestCase):
 
     def setUp(self):
@@ -34,3 +36,47 @@ class TestAPIRecipeDetail(TestCase):
     def test_get(self):
         resp = self.client.get('/api/v1/recipe/1/').data
         self.assertEquals(resp['id'], 1)
+
+
+class TestAPICommentList(TestCase):
+
+    def setUp(self):
+        insert_users()
+        insert_ingredients()
+        insert_recipes()
+
+    def test_create(self):
+        self.client.login(username="jude", password="password")
+        resp = self.client.post('/api/v1/comment/', {
+            "recipe_id": 1,
+            "text": "Test Comment"
+        })
+        self.assertEquals(Comment.objects.count(), 1)
+
+    def test_get(self):
+        self.test_create()
+        self.client.logout()
+        resp = self.client.get('/api/v1/comment/?recipe_id=1')
+        self.assertEquals(len(resp.data), 1)
+
+
+class TestAPIRating(TestCase):
+
+    def setUp(self):
+        insert_users()
+        insert_ingredients()
+        insert_recipes()
+
+    def test_set_rating(self):
+        self.client.login(username="jude", password="password")
+        resp = self.client.post('/api/v1/rating/', {
+            "recipe_id": 1,
+            "rating": 4
+        })
+        self.assertEquals(Rating.objects.count(), 1)
+
+    def test_get(self):
+        self.test_set_rating()
+        self.client.logout()
+        resp = self.client.get('/api/v1/recipe/1/')
+        self.assertEquals(resp.data['rating'], 4)

@@ -9,9 +9,20 @@ class RecipeSerializer(serializers.Serializer):
     nutrition = serializers.JSONField()
     steps = serializers.JSONField()
 
+
+class UserSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    username = serializers.CharField()
+
+
 class CommentSerializer(serializers.Serializer):
-    user = serializers.JSONField()
-    id = serializers.IntegerField()
+    user = UserSerializer(read_only=True)
+    id = serializers.IntegerField(read_only=True)
     recipe_id = serializers.IntegerField()
-    text = serializers.TextField()
-    timestamp = serializers.DateTimeField()
+    text = serializers.CharField()
+    timestamp = serializers.DateTimeField(read_only=True)
+
+
+class RatingSerializer(serializers.Serializer):
+    rating = serializers.IntegerField()
+    recipe_id = serializers.IntegerField()

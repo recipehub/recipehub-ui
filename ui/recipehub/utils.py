@@ -15,11 +15,6 @@ def get_following(user_id):
     followers = Follow.objects.filter(follower=user_id)
     return [record.follows for record in followers]
 
-def get_all_comments(recipe_id):
-    comment_list = Comment.objects.filter(recipe_id=recipe_id).order_by('timestamp')
-    return [comment for comment in comment_list]
-
-
 def get_ingredient_list(ingredient_dict):
     return [(Ingredient.objects.get(pk=key), ingredient_dict[key]) for key in ingredient_dict]
 
