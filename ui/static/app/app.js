@@ -23,7 +23,7 @@
                     templateUrl: '/static/app/templates/home.html',
                     controller: 'HomeController'
                 }).
-                when('/recipe', {
+                when('/recipe/:id', {
                     templateUrl: '/static/app/templates/recipe.html',
                     controller: 'RecipeController'
                 });

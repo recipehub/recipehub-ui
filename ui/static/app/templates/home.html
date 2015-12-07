@@ -1,0 +1,7 @@
+<div ng-repeat="recipe  in recipes">
+    <md-content class="md-padding" layout="row" layout-wrap layout-align="center start">
+        <div ng-click="go('/recipe/' + recipe.id)" >
+            <div ng-include src="'/static/app/templates/includes/recipe-short.html'"></div>
+        </div>
+    </md-content>
+</div>

@@ -4,6 +4,7 @@ class RecipeSerializer(serializers.Serializer):
     title = serializers.CharField(max_length=200)
     rating = serializers.FloatField()
     user = serializers.JSONField()
+    id = serializers.IntegerField()
     ingredients = serializers.JSONField()
     nutrition = serializers.JSONField()
     steps = serializers.JSONField()

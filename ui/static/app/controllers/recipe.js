@@ -1,6 +1,8 @@
 (function(){
     angular.module('recipehub')
-        .controller('RecipeController', [function RecipeController() {
+        .controller('RecipeController', ['RecipeService', function recipeController($recipeService) {
+            $recipeService.getTopFive()
+                .then(function(data) {
+                });
         }]);
-
 })();
