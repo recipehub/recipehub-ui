@@ -25,6 +25,7 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'ui.recipehub',
     'rest_framework',
+    'django_extensions',
 )
 
 MIDDLEWARE_CLASSES = (

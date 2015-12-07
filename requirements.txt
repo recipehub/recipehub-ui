@@ -3,3 +3,4 @@ python-social-auth
 django-bower
 requests
 djangorestframework
+django-extensions

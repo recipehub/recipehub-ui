@@ -7,7 +7,7 @@ from ..data import get_recipes_for_users
 from pprint import pprint
 factory = APIRequestFactory()
 
-class TestCase(TestCase):
+class TestAPIRecipeList(TestCase):
 
     def setUp(self):
         insert_users()
@@ -23,3 +23,14 @@ class TestCase(TestCase):
     def test_top_5(self):
         resp = self.client.get('/api/v1/recipe/?top_five=1').data
         self.assertEqual(len(resp), 2)
+
+class TestAPIRecipeDetail(TestCase):
+
+    def setUp(self):
+        insert_users()
+        insert_ingredients()
+        insert_recipes()
+
+    def test_get(self):
+        resp = self.client.get('/api/v1/recipe/1/').data
+        self.assertEquals(resp['id'], 1)
