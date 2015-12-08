@@ -1,11 +1,31 @@
 (function(){
     angular.module('recipehub')
-        .controller('RecipeController', ['RecipeService', '$scope', '$routeParams', function recipeController($recipeService, $scope, $routeParams) {
-            $recipeService.getRecipe($routeParams.id)
-                .then(function(response) {
+        .controller('RecipeController', ['RecipeService', '$scope', '$routeParams', 'CommentService', 'RatingService', function recipeController($recipeService, $scope, $routeParams, $commentService, $ratingService) {
+
+            var recipeId = $routeParams.id;
+            var scope = $scope;
+
+            $recipeService.getRecipe(recipeId)
+                .then(function (response) {
                     $scope.recipe = response.data;
-                    console.log(response.data)
                 });
-            $scope.modelArray = [1, 2, 3, 4]
+
+            function putComments () {
+                $commentService.getCommentsForRecipe(recipeId)
+                    .then(function (response) {
+                        $scope.comments = response.data;
+                    });
+            }
+
+            $scope.makeComment = function () {
+                var self = this;
+                $commentService.makeComment(recipeId, this.newComment)
+                    .then(function() {
+                        putComments();
+                        self.newComment = '';
+                    });
+            };
+
+            putComments();
         }]);
 })();

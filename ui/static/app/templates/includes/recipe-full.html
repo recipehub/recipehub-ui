@@ -1,52 +1,86 @@
 <md-card>
+
     <md-card-title>
         <md-card-title-text>
             <span class="md-headline">{{ recipe.title }}</span>
+            <p class="md-secondary">
+                <input-stars max="5" ng-model="recipe.rating"></input-stars>
+            </p>
         </md-card-title-text>
+
     </md-card-title>
     <md-divider></md-divider>
 
     <md-subheader class="md-no-sticky">Nutrition</md-subheader>
-    <md-list-item>
-        <div class="md-list-item-text">
-            <p>Calories</p>
-            <p class="md-secondary">{{ recipe.nutrition.calories }} kcal</p>
-        </div>
-    </md-list-item>
-    <md-list-item>
-        <div class="md-list-item-text">
-            <p>Carbohydrates</p>
-            <p class="md-secondary">{{ recipe.nutrition.carbohydrate }} g</p>
-        </div>
-    </md-list-item>
-    <md-list-item>
-        <div class="md-list-item-text">
-            <p>Protein</p>
-            <p class="md-secondary">{{ recipe.nutrition.protein }} g</p>
-        </div>
-    </md-list-item>
-    <md-list-item>
-        <div class="md-list-item-text">
-            <p>Fat</p>
-            <p class="md-secondary">{{ recipe.nutrition.fat }} g</p>
-        </div>
-    </md-list-item>
+    <md-list>
+
+        <md-list-item>
+            <div class="md-list-item-text">
+                <p>Calories</p>
+                <p class="md-secondary">{{ recipe.nutrition.calories }} kcal</p>
+            </div>
+        </md-list-item>
+        <md-list-item>
+            <div class="md-list-item-text">
+                <p>Carbohydrates</p>
+                <p class="md-secondary">{{ recipe.nutrition.carbohydrate }} g</p>
+            </div>
+        </md-list-item>
+        <md-list-item>
+            <div class="md-list-item-text">
+                <p>Protein</p>
+                <p class="md-secondary">{{ recipe.nutrition.protein }} g</p>
+            </div>
+        </md-list-item>
+        <md-list-item>
+            <div class="md-list-item-text">
+                <p>Fat</p>
+                <p class="md-secondary">{{ recipe.nutrition.fat }} g</p>
+            </div>
+        </md-list-item>
+    </md-list>
     <md-divider></md-divider>
 
     <md-subheader class="md-no-sticky">Ingredients</md-subheader>
-    <md-list-item ng-repeat="ingredient in recipe.ingredients">
-        <div class="md-list-item-text">
-            <p>{{ ingredient.name }}</p>
-            <p class="md-secondary">{{ ingredient.amount? ingredient.amount: '' }} {{ ingredient.unit_of_measurement }}</p>
-        </div>
-    </md-list-item>
+    <md-list>
+        <md-list-item ng-repeat="ingredient in recipe.ingredients">
+            <div class="md-list-item-text">
+                <p>{{ ingredient.name }}</p>
+                <p class="md-secondary">{{ ingredient.amount? ingredient.amount: '' }} {{ ingredient.unit_of_measurement }}</p>
+            </div>
+        </md-list-item>
+    </md-list>
     <md-divider></md-divider>
 
     <md-subheader class="md-no-sticky">Steps</md-subheader>
 
-    <md-list-item ng-repeat="step in recipe.steps">
-        <div class="md-list-item-text">
-            <strong>{{ $index + 1 }}.</strong>  {{ step }}
-        </div>
-    </md-list-item>
+    <md-list>
+        <md-list-item ng-repeat="step in recipe.steps">
+            <div class="md-list-item-text">
+                <strong>{{ $index + 1 }}.</strong>  {{ step }}
+            </div>
+        </md-list-item>
+    </md-list>
+
+    <md-divider></md-divider>
+
+    <md-subheader class="md-no-sticky">Comments</md-subheader>
+
+    <md-list>
+        <md-list-item class="md-3-line md-long-text" ng-repeat="comment in comments">
+            <img gravatar-src="'{{ comment.user.email }}'" gravatar-size="100" class="md-avatar">
+            <div class="md-list-item-text">
+                <h3> {{comment.user.username}} </h6>
+                    <p> {{comment.text}} </p>
+            </div>
+        </md-list-item>
+
+        <md-list-item>
+            <div class="md-list-item-text" flex>
+                <md-input-container layout-padding>
+                    <textarea ng-model="newComment" rows="5" placeholder="New Comment" ng-enter="makeComment()"></textarea>
+                </md-input-container>
+            </div>
+        </md-list-item>
+    </md-list>
 </md-card>

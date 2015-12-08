@@ -1,5 +1,5 @@
 from django.test import TestCase
-from ui.recipehub.data import (get_recipe, ping, new_recipe, update_recipe, get_recipes_for_users, fork_recipe)
+from ui.recipehub.data import (get_recipe, ping, new_recipe, update_recipe, get_recipes_for_users, fork_recipe, get_forks, get_versions, get_recipe_version)
 
 
 class TestPing(TestCase):
@@ -45,6 +45,30 @@ class TestForkRecipe(TestCase):
         self.assertNotEqual(recipe['id'], forked_recipe['id'])
         self.assertEqual(recipe['data']['id'], forked_recipe['data']['id'])
         self.assertEqual(recipe['id'], forked_recipe['fork_of_id'])
+
+class TestForkList(TestCase):
+
+    def test_fork_list(self):
+        recipe = new_recipe(sunny_side_up['title'], 22, sunny_side_up['ingredients'], sunny_side_up['steps'])
+        forked_recipe = fork_recipe(22, recipe['id'])
+        self.assertEqual(len(get_forks(recipe['id'])), 1)
+
+class TestVersionList(TestCase):
+
+    def test_version_list(self):
+        recipe = new_recipe(sunny_side_up['title'], 22, sunny_side_up['ingredients'], sunny_side_up['steps'])
+        updated_recipe = update_recipe(recipe['id'], sunny_side_up_v2['ingredients'], sunny_side_up_v2['steps'])
+        self.assertEqual(len(get_versions(recipe['id'])), 2)
+        self.assertIn(recipe['data']['id'], get_versions(recipe['id']))
+        self.assertIn(recipe['data']['id'], get_versions(updated_recipe['id']))
+
+class TestRecipeVersion(TestCase):
+
+    def test_recipe_version(self):
+        recipe = new_recipe(sunny_side_up['title'], 22, sunny_side_up['ingredients'], sunny_side_up['steps'])
+        updated_recipe = update_recipe(recipe['id'], sunny_side_up_v2['ingredients'], sunny_side_up_v2['steps'])
+        old_version = get_recipe_version(updated_recipe['id'], recipe['data']['id'])
+        self.assertNotIn("cheese", old_version['data']['ingredients'])
 
 sunny_side_up = {
     # "id": 1,

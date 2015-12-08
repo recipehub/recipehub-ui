@@ -3,9 +3,10 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import api_view
 from .utils import get_top, get_recipe, set_rating
 from .models import Comment
-from .serializers import RecipeSerializer, CommentSerializer, RatingSerializer
+from .serializers import RecipeSerializer, CommentSerializer, RatingSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
@@ -63,3 +64,10 @@ class RatingCreateView(APIView):
         if serializer.is_valid():
             set_rating(serializer.data['recipe_id'], request.user.id, serializer.data['rating'])
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def current_user(request):
+    if not request.user.id:
+        return Response({})
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)

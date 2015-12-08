@@ -80,3 +80,20 @@ class TestAPIRating(TestCase):
         self.client.logout()
         resp = self.client.get('/api/v1/recipe/1/')
         self.assertEquals(resp.data['rating'], 4)
+
+class TestAPIUser(TestCase):
+
+    def setUp(self):
+        insert_users()
+        insert_ingredients()
+        insert_recipes()
+        self.jude = User.objects.get(username="jude")
+
+    def test_logged_in_user(self):
+        self.client.login(username=self.jude.username, password="password")
+        resp = self.client.get('/api/v1/user/')
+        self.assertEqual(resp.data['id'], self.jude.id)
+
+    def test_guest_user(self):
+        resp = self.client.get('/api/v1/user/')
+        self.assertEqual(resp.data, {})

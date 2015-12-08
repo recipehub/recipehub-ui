@@ -40,6 +40,25 @@ def fork_recipe(user_id, recipe_id):
     r.raise_for_status()
     return r.json()
 
+def get_forks(recipe_id):
+    r = requests.get(settings.RECIPEHUB_MS_URL + '/fork/'.format(recipe_id), params={
+        'recipe_id': recipe_id,
+    })
+    r.raise_for_status()
+    return r.json()
+
+def get_versions(recipe_id):
+    r = requests.get(settings.RECIPEHUB_MS_URL + '/version/{}'.format(recipe_id))
+    r.raise_for_status()
+    return r.json()
+
+def get_recipe_version(recipe_id, version_id):
+    r = requests.get(settings.RECIPEHUB_MS_URL + '/recipe/{}/'.format(recipe_id), params={
+         'version_id': version_id
+    })
+    r.raise_for_status()
+    return r.json()
+
 def ping():
     return requests.get(settings.RECIPEHUB_MS_URL + '/ping').json()
 

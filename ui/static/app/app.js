@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('recipehub', ['ngMaterial', 'ngRoute', 'angular-sortable-view'])
+        .module('recipehub', ['ngMaterial', 'ngRoute', 'angular-sortable-view', 'ui.gravatar', 'ngCookies', 'angular-input-stars'])
         .config(function($mdIconProvider, $mdThemingProvider, $routeProvider) {
 
             $mdIconProvider
@@ -27,6 +27,13 @@
                     templateUrl: '/static/app/templates/recipe.html',
                     controller: 'RecipeController'
                 });
-        });
+        })
+        .
+        run([
+            '$http', 
+            '$cookies', 
+            function($http, $cookies) {
+                $http.defaults.headers.post['X-CSRFToken'] = $cookies.get('csrftoken');
+            }]);
 
 })();
