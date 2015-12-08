@@ -3,64 +3,63 @@ import json
 from django.conf import settings
 
 def get_recipe(recipe_id):
-     r = requests.get(settings.RECIPEHUB_MS_URL + '/recipe/{}'.format(recipe_id))
-     r.raise_for_status()
-     return r.json()
+    return request('get', '/recipe/{}'.format(recipe_id))
 
 def new_recipe(title, user_id, ingredients, steps):
-    r = requests.post(settings.RECIPEHUB_MS_URL + '/recipe/', data=json.dumps({
-        'title': title,
-        'user_id': user_id,
-        'ingredients': ingredients,
-        'steps': steps
-    }))
-    r.raise_for_status()
-    return r.json()
+    return request('post', '/recipe/', {
+         'title': title,
+         'user_id': user_id,
+         'ingredients': ingredients,
+         'steps': steps
+    })
 
 def update_recipe(recipe_id, ingredients, steps):
-    r = requests.put(settings.RECIPEHUB_MS_URL + '/recipe/{}/'.format(recipe_id), data=json.dumps({
-        'recipe_id': recipe_id,
-        'ingredients': ingredients,
-        'steps': steps
-    }))
-    r.raise_for_status()
-    return r.json()
+    return request('put', '/recipe/{}/'.format(recipe_id), {
+         'recipe_id': recipe_id,
+         'ingredients': ingredients,
+         'steps': steps
+    })
 
 def get_recipes_for_users(user_ids):
-     r = requests.get(settings.RECIPEHUB_MS_URL + '/recipe/', data={
+    return request('get', '/recipe/', {
          'user_id': user_ids
-     })
-     r.raise_for_status()
-     return r.json()
+    })
 
 def fork_recipe(user_id, recipe_id):
-    r = requests.post(settings.RECIPEHUB_MS_URL + '/fork/{}/'.format(recipe_id), data=json.dumps({
-        'user_id': user_id,
-    }))
-    r.raise_for_status()
-    return r.json()
+    return request('post', '/fork/{}/'.format(recipe_id), {
+         'user_id': user_id
+    })
 
 def get_forks(recipe_id):
-    r = requests.get(settings.RECIPEHUB_MS_URL + '/fork/'.format(recipe_id), params={
-        'recipe_id': recipe_id,
+    return request('get', '/fork/'.format(recipe_id), {
+         'recipe_id': recipe_id,
     })
-    r.raise_for_status()
-    return r.json()
 
 def get_versions(recipe_id):
-    r = requests.get(settings.RECIPEHUB_MS_URL + '/version/{}'.format(recipe_id))
-    r.raise_for_status()
-    return r.json()
+    return request('get', '/version/{}'.format(recipe_id))
 
 def get_recipe_version(recipe_id, version_id):
-    r = requests.get(settings.RECIPEHUB_MS_URL + '/recipe/{}/'.format(recipe_id), params={
+    return request('get', '/recipe/{}/'.format(recipe_id), {
          'version_id': version_id
     })
-    r.raise_for_status()
-    return r.json()
 
 def ping():
-    return requests.get(settings.RECIPEHUB_MS_URL + '/ping').json()
+    return request('get', '/ping')
 
 def clean():
     return requests.get(settings.RECIPEHUB_MS_URL + '/clean')
+
+def request(request_type, path, data={}):
+    path = settings.RECIPEHUB_MS_URL + path
+
+    if request_type == "get":
+        if not isinstance(data, str):
+            r = requests.get(path, params=data)
+
+    elif request_type == "post" or request_type == "put":
+        data = json.dumps(data)
+        r = getattr(requests, request_type)(path, data=data)
+        r.raise_for_status()
+
+    return r.json()
+
