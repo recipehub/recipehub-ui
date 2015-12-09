@@ -3,6 +3,7 @@ from rest_framework import serializers
 class RecipeSerializer(serializers.Serializer):
     title = serializers.CharField(max_length=200)
     rating = serializers.FloatField()
+    fork_of_id = serializers.IntegerField()
     user = serializers.JSONField()
     id = serializers.IntegerField()
     ingredients = serializers.JSONField()

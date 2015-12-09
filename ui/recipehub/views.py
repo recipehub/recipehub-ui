@@ -4,10 +4,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-from .utils import get_top, get_recipe, set_rating
+from .utils import get_top, get_recipe, set_rating, get_detailed_recipe
 from .models import Comment
+from .data import get_forks, fork_recipe
 from .serializers import RecipeSerializer, CommentSerializer, RatingSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+import json
+from pprint import pprint
 
 
 class RecipeListCreateView(APIView):
@@ -71,3 +74,26 @@ def current_user(request):
         return Response({})
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
+
+
+class ForkListCreateView(APIView):
+    """
+    List all forks of recipe, or create a new fork.
+    """
+    permission_classes = (IsAuthenticatedOrReadOnly, )
+    serializer_class = RecipeSerializer
+
+    def get(self, request, format=None):
+        recipe_id = request.GET.get('recipe_id')
+        if recipe_id:
+            forks = get_forks(recipe_id)
+            return Response(json.dumps(forks))
+
+    def post(self, request, format=None):
+        recipe_id = request.POST.get('recipe_id')
+        if recipe_id:
+            fork = fork_recipe(request.user.id, recipe_id)
+            serializer = self.serializer_class(data=get_detailed_recipe(fork))
+            serializer.is_valid()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response('', status=status.HTTP_400_BAD_REQUEST)
