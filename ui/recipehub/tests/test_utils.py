@@ -158,6 +158,7 @@ def get_recipes():
         {
             "title": "Sunny Side up",
             "user_id": User.objects.get(username="john").id,
+            "description": "Easy boiled egg recipe",
             "ingredients": {
                 Ingredient.objects.get(name="Canola Oil").id: 2,
                 Ingredient.objects.get(name="Pepper").id: 0,
@@ -173,6 +174,7 @@ def get_recipes():
         },
         {
             "title": "Boiled eggs",
+            "description": "Easy boiled egg recipe",
             "user_id": User.objects.get(username="john").id,
             "ingredients": {
                 Ingredient.objects.get(name="Water").id: 0,

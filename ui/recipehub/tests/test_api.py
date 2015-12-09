@@ -7,6 +7,8 @@ from ..data import get_recipes_for_users, fork_recipe, clean
 from ..models import Comment, Rating
 from pprint import pprint
 import json
+import requests
+import base64
 factory = APIRequestFactory()
 
 class TestAPIRecipeList(TestCase):
@@ -171,3 +173,25 @@ class TestAPIForks(TestCase):
             'recipe_id': 1
         })
         self.assertEqual(len(json.loads(resp.data)), 1)
+
+
+# class TestAPIRecipeImage(TestCase):
+
+#     def setUp(self):
+#         insert_users()
+#         insert_ingredients()
+#         insert_recipes()
+#         self.jude = User.objects.get(username="jude")
+
+#     def test_image(self):
+#         self.client.login(username=self.jude.username, password="password")
+#         content = requests.get('https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97150&w=350&h=150').content
+#         base64_content = base64.encodestring(content)
+#         resp = self.client.post('/api/v1/image/', data={
+#             'recipe_id': 1,
+#             'image': base64_content
+#         })
+#         print resp
+#         print self.client.get('/api/v1/image/', {
+#             'recipe_id': 1
+#         })

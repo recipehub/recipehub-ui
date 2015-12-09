@@ -4,3 +4,6 @@ django-bower
 requests
 djangorestframework
 django-extensions
+Pillow
+django-extra-fields
+pyopenssl

@@ -5,12 +5,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from .utils import get_top, get_recipe, set_rating, get_detailed_recipe
-from .models import Comment
+from .models import Comment, RecipeImage
 from .data import get_forks, fork_recipe, update_recipe, get_versions, new_recipe, get_recipes_for_users
-from .serializers import RecipeSerializer, CommentSerializer, RatingSerializer, UserSerializer
+from .serializers import RecipeSerializer, CommentSerializer, RatingSerializer, UserSerializer, RecipeImageSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 import json
 from pprint import pprint
+from base64 import b64decode
+from django.core.files.base import ContentFile
 
 
 class RecipeListCreateView(APIView):
@@ -31,7 +33,7 @@ class RecipeListCreateView(APIView):
     def post(self, request, format=None):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            recipe = new_recipe(serializer.data['title'], request.user.id, serializer.data['ingredients'], serializer.data['steps'])
+            recipe = new_recipe(serializer.data['title'], serializer.data['description'], request.user.id, serializer.data['ingredients'], serializer.data['steps'])
             return Response(get_detailed_recipe(recipe), status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -119,3 +121,27 @@ class VersionListView(APIView):
     serializer = RecipeSerializer
     def get(self, request, recipe_id, format=None):
         return Response(json.dumps(get_versions(recipe_id)))
+
+class RecipeImageGetCreateView(APIView):
+    serializer_class = RecipeImageSerializer
+
+    def get(self, request, format=None):
+        recipe_id = request.GET.get('recipe_id')
+        print 'here', recipe_id
+        if recipe_id:
+            image = RecipeImage.objects.get(recipe_id=recipe_id)
+            res = self.serializer_class(image)
+            return Response(res.data)
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if request.data.get('image') and request.data.get('recipe_id'):
+            data = {
+                'recipe_id': request.data.get('recipe_id'),
+                'image': ContentFile(request.data.get('image'), 'testimg.png')
+            }
+            image = RecipeImage.objects.create(**data)
+            print image.file
+            res = self.serializer_class(image)
+            return Response(res.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -54,3 +54,9 @@ class Comment(models.Model):
 
     def __unicode__(self):
         return u'recipe:' + unicode(self.recipe_id) + u' text:' + unicode(self.text) + u' ' + unicode(self.timestamp)
+
+
+class RecipeImage(models.Model):
+
+    recipe_id = models.BigIntegerField(db_index=True)
+    image = models.ImageField()
