@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from .utils import get_top, get_recipe, set_rating, get_detailed_recipe
 from .models import Comment
-from .data import get_forks, fork_recipe
+from .data import get_forks, fork_recipe, update_recipe, get_versions, new_recipe, get_recipes_for_users
 from .serializers import RecipeSerializer, CommentSerializer, RatingSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 import json
@@ -17,26 +17,40 @@ class RecipeListCreateView(APIView):
     """
     List all recipes, or create a new recipe.
     """
+    serializer_class = RecipeSerializer
     def get(self, request, format=None):
         recipes = []
         if request.GET.get('top_five'):
             recipes = get_top(5)
-        serializer = RecipeSerializer(recipes, many=True)
+        if request.GET.get('user_id'):
+            recipes = get_recipes_for_users([request.GET.get('user_id')])
+            recipes = [get_detailed_recipe(recipe) for recipe in recipes]
+        serializer = self.serializer_class(recipes, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = SnippetSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            recipe = new_recipe(serializer.data['title'], request.user.id, serializer.data['ingredients'], serializer.data['steps'])
+            return Response(get_detailed_recipe(recipe), status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class RecipeDetailView(APIView):
+    serializer_class = RecipeSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
-    def get(self, request, recipe_id=1):
-        recipe = get_recipe(recipe_id)
+    def get(self, request, recipe_id):
+        version_id = request.GET.get('version_id')
+        recipe = get_recipe(recipe_id, version_id=version_id)
         serializer = RecipeSerializer(recipe)
         return Response(serializer.data)
+
+    def put(self, request, recipe_id):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            update_recipe(recipe_id, serializer.data['ingredients'], serializer.data['steps'])
+            return Response('', status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CommentListCreateView(APIView):
@@ -97,3 +111,11 @@ class ForkListCreateView(APIView):
             serializer.is_valid()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response('', status=status.HTTP_400_BAD_REQUEST)
+
+class VersionListView(APIView):
+    """
+    List versions
+    """
+    serializer = RecipeSerializer
+    def get(self, request, recipe_id, format=None):
+        return Response(json.dumps(get_versions(recipe_id)))

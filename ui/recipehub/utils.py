@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models import Avg
 from .models import Ingredient, Follow, Rating, Comment
 from .data import get_recipe as _get_recipe
+from .data import get_recipe_version
 from pprint import pprint
 from copy import deepcopy
 
@@ -57,7 +58,9 @@ def get_detailed_nutrition(ingredients):
             nutrition_dict[key] += (getattr(ingredient[0],key) * ingredient[1])
     return nutrition_dict
 
-def get_recipe(recipe_id):
+def get_recipe(recipe_id, version_id=None):
+    if version_id:
+        return get_detailed_recipe(get_recipe_version(recipe_id, version_id))
     return get_detailed_recipe(_get_recipe(recipe_id))
 
 def get_user_dict(user_id):

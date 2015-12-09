@@ -2,12 +2,12 @@ from rest_framework import serializers
 
 class RecipeSerializer(serializers.Serializer):
     title = serializers.CharField(max_length=200)
-    rating = serializers.FloatField()
-    fork_of_id = serializers.IntegerField()
-    user = serializers.JSONField()
-    id = serializers.IntegerField()
+    rating = serializers.FloatField(read_only=True)
+    fork_of_id = serializers.IntegerField(required=False)
+    user = serializers.JSONField(required=False)
+    id = serializers.IntegerField(read_only=True)
     ingredients = serializers.JSONField()
-    nutrition = serializers.JSONField()
+    nutrition = serializers.JSONField(required=False)
     steps = serializers.JSONField()
 
 

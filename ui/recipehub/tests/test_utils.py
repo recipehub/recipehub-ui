@@ -167,7 +167,6 @@ def get_recipes():
             "steps": [
                 "Heat oil in a pan",
                 "Break eggs and put them in the pan",
-                "sprinkle cheese on the eggs",
                 "Add salt and close the lid",
                 "Once done serve in plate"
             ]
@@ -191,6 +190,26 @@ def get_recipes():
             ]
         },
     ]
+
+def get_updated_recipe():
+        return {
+            "title": "Sunny Side up",
+            "user_id": User.objects.get(username="john").id,
+            "ingredients": {
+                Ingredient.objects.get(name="Canola Oil").id: 2,
+                Ingredient.objects.get(name="Pepper").id: 0,
+                Ingredient.objects.get(name="Salt").id: 0,
+                Ingredient.objects.get(name="Parmesan Cheese").id: 0,
+                Ingredient.objects.get(name="Eggs").id: 2,
+            },
+            "steps": [
+                "Heat oil in a pan",
+                "Break eggs and put them in the pan",
+                "sprinkle cheese on the eggs",
+                "Add salt and close the lid",
+                "Once done serve in plate"
+            ]
+        }
 
 users = [
     [
