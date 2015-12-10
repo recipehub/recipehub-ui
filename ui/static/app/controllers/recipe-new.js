@@ -26,7 +26,7 @@
                 return results;
             };
             $scope.addMoreIngredients = function () {
-                recipe.ingredients.unshift({});
+                recipe.ingredients.push({});
             };
 
             $scope.addStep = function () {
@@ -49,6 +49,10 @@
                     'steps': $scope.steps
                 }
                 $recipeService.newRecipe(to_save)
+                    .then(function(response) {
+                        saveAlert()
+                        $scope.go('/recipe/' + response.data.id)
+                    })
             };
 
 
@@ -60,6 +64,21 @@
                     return (angular.lowercase(ingredient.name).indexOf(lowercaseQuery) === 0);
                 };
 
+            }
+
+            function saveAlert() {
+                $mdDialog.show(
+                    $mdDialog.alert()
+                        .clickOutsideToClose(true)
+                        .title('Saved')
+                        .ariaLabel('Save')
+                        .ok('Got it!')
+                        .openFrom({
+                            top: -50,
+                            width: 30,
+                            height: 80
+                        })
+                );
             }
         }]);
 

@@ -65,6 +65,9 @@
                 }
                 console.log(to_save)
                 $recipeService.updateRecipe($routeParams.id, to_save)
+                    .then(function() {
+                        saveAlert()
+                    })
             };
 
 
@@ -77,6 +80,22 @@
                 };
 
             }
+
+            function saveAlert() {
+                $mdDialog.show(
+                    $mdDialog.alert()
+                        .clickOutsideToClose(true)
+                        .title('Saved')
+                        .ariaLabel('Save')
+                        .ok('Got it!')
+                        .openFrom({
+                            top: -50,
+                            width: 30,
+                            height: 80
+                        })
+                );
+            }
+
         }]);
 
 })();
