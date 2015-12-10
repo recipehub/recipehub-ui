@@ -32,8 +32,23 @@
             </md-toolbar>
             <div layout="row">
                 <div flex></div>
+                <div flex>
+                    <md-input-container md-theme="input" flex="" class="md-input-theme" style="width: 100%">
+                        <label for="input_001">&nbsp;</label>
+                        <input placeholder="Enter Search" ng-enter="fireSearch()" ng-model="searchQuery" class=" md-input" tabindex="0" id="input_001" aria-invalid="false">
+                    </md-input-container>
+                </div>
+                <div flex>
+                </div>
+            </div>
+            <div layout="row">
+                <div flex>
+                    <div ng-include src="'/static/app/templates/includes/left.html'"></div>
+                </div>
                 <div ng-view flex></div>
-                <div flex></div>
+                <div flex>
+                    <div ng-include src="'/static/app/templates/includes/right.html'"></div>
+                </div>
             </div>
             <script type="text/javascript" src="/static/bower_components/angular/angular.js"></script>
             <script type="text/javascript" src="/static/bower_components/angular-animate/angular-animate.js"></script>
@@ -50,9 +65,15 @@
             <script type="text/javascript" src="/static/app/directives/star.js"></script>
             <script type="text/javascript" src="/static/app/controllers/page.js"></script>
             <script type="text/javascript" src="/static/app/controllers/home.js"></script>
+            <script type="text/javascript" src="/static/app/controllers/search.js"></script>
+            <script type="text/javascript" src="/static/app/controllers/myrecipes.js"></script>
             <script type="text/javascript" src="/static/app/controllers/recipe.js"></script>
+            <script type="text/javascript" src="/static/app/controllers/recipe-new.js"></script>
+            <script type="text/javascript" src="/static/app/controllers/recipe-edit.js"></script>
             <script type="text/javascript" src="/static/app/services/comments.js"></script>
+            <script type="text/javascript" src="/static/app/services/ingredients.js"></script>
             <script type="text/javascript" src="/static/app/services/ratings.js"></script>
+            <script type="text/javascript" src="/static/app/services/search.js"></script>
             <script type="text/javascript" src="/static/app/services/recipe.js"></script>
             <script type="text/javascript" src="/static/app/services/user.js"></script>
     </body>

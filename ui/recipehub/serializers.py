@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import RecipeImage
+from .models import RecipeImage, Ingredient
 from drf_extra_fields.fields import Base64ImageField
 
 class RecipeSerializer(serializers.Serializer):
-    title = serializers.CharField(max_length=200)
+    title = serializers.CharField(max_length=200, required=False)
     description = serializers.CharField(max_length=200, required=False)
     message = serializers.CharField(max_length=200, required=False)
     rating = serializers.FloatField(read_only=True)
@@ -41,3 +41,7 @@ class RecipeImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RecipeImage
+
+class IngredientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ingredient

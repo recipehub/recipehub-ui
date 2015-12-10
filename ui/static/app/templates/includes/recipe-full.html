@@ -1,12 +1,28 @@
 <md-card>
 
+    <md-card-actions layout="row" layout-align="end center">
+        <md-button class="md-primary md-raised" ng-click="fork()">Fork</md-button>
+    </md-card-actions>
+
+    <md-card-actions layout="row" layout-align="end center">
+        <md-button class="md-primary md-raised" ng-click="go('/recipe/edit/' + recipe.id)">Edit</md-button>
+    </md-card-actions>
+
+
+
     <md-card-title>
         <md-card-title-text>
             <span class="md-headline">{{ recipe.title }}</span>
             <p class="md-secondary">
                 <input-stars max="5" ng-model="recipe.rating"></input-stars>
             </p>
+        <p ng-if="recipe.fork_of">Fork of <span ng-click="go('/recipe/'+recipe.fork_of.id)">{{ recipe.fork_of.title }}</span></p>
         </md-card-title-text>
+        by {{ recipe.user.username }}
+        <!--         {{ recipe.fork_of }} -->
+        <!--         {{ recipe.fork_of_id }} -->
+
+
 
     </md-card-title>
     <md-divider></md-divider>
@@ -64,13 +80,37 @@
 
     <md-divider></md-divider>
 
+    <md-subheader class="md-no-sticky">Versions</md-subheader>
+
+    <md-list>
+        <md-list-item class="md-3-line md-long-text" ng-repeat="version in versions" ng-click="go('/recipe/' + recipe.id + '/',{version_id: version[0] } )">
+            <div class="md-list-item-text">
+                <h6> {{version[1]}} </h6>
+            </div>
+        </md-list-item>
+    </md-list>
+
+    <md-subheader class="md-no-sticky">Forks</md-subheader>
+
+    <md-list>
+        <md-list-item class="md-3-line md-long-text" ng-repeat="fork in forks" ng-click="go('/recipe/'+fork.id)">
+            <img gravatar-src="'{{ fork.user.email }}'" gravatar-size="100" class="md-avatar">
+            <div class="md-list-item-text">
+                <h6> {{fork.user.username}} </h6>
+                    <p> {{fork.title}} </p>
+            </div>
+        </md-list-item>
+    </md-list>
+
+    <md-divider></md-divider>
+
     <md-subheader class="md-no-sticky">Comments</md-subheader>
 
     <md-list>
         <md-list-item class="md-3-line md-long-text" ng-repeat="comment in comments">
             <img gravatar-src="'{{ comment.user.email }}'" gravatar-size="100" class="md-avatar">
             <div class="md-list-item-text">
-                <h3> {{comment.user.username}} </h6>
+                <h6> {{comment.user.username}} </h6>
                     <p> {{comment.text}} </p>
             </div>
         </md-list-item>

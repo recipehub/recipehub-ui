@@ -23,6 +23,22 @@
                     templateUrl: '/static/app/templates/home.html',
                     controller: 'HomeController'
                 }).
+                when('/search', {
+                    templateUrl: '/static/app/templates/home.html',
+                    controller: 'SearchController'
+                }).
+                when('/myrecipes', {
+                    templateUrl: '/static/app/templates/home.html',
+                    controller: 'MyRecipesController'
+                }).
+                when('/recipe/new', {
+                    templateUrl: '/static/app/templates/includes/recipe-new.html',
+                    controller: 'NewRecipeController'
+                }).
+                when('/recipe/edit/:id', {
+                    templateUrl: '/static/app/templates/includes/recipe-edit.html',
+                    controller: 'EditRecipeController'
+                }).
                 when('/recipe/:id', {
                     templateUrl: '/static/app/templates/recipe.html',
                     controller: 'RecipeController'
@@ -34,6 +50,8 @@
             '$cookies', 
             function($http, $cookies) {
                 $http.defaults.headers.post['X-CSRFToken'] = $cookies.get('csrftoken');
+                $http.defaults.headers.put['X-CSRFToken'] = $cookies.get('csrftoken');
+                $http.defaults.headers.put['Content-Type'] = 'application/json'
             }]);
 
 })();

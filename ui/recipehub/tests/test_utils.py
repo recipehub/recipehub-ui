@@ -1,6 +1,7 @@
 from django.test import TestCase
 from ui.recipehub.models import Ingredient, Rating
 from ui.recipehub.utils import get_detailed_recipe, set_rating, get_rating, RatingException, get_top
+from ui.recipehub.cluster_utils import empty_cluster
 from ui.recipehub.data import (get_recipe, clean, new_recipe, update_recipe, get_recipes_for_users, fork_recipe)
 from django.contrib.auth.models import User
 from pprint import pprint
@@ -90,6 +91,7 @@ def insert_users():
         User.objects.create_user(*user)
 
 def insert_recipes():
+    empty_cluster()
     clean()
     for recipe in get_recipes():
         new_recipe(**recipe)

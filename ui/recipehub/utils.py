@@ -23,7 +23,7 @@ def get_detailed_ingredients(ingredients):
     ret = []
     ingredient_tuple_list = get_ingredient_list(ingredients)
     for ingredient in ingredient_tuple_list:
-        ret.append({'id':ingredient[0].id, 'name':ingredient[0].name, 'amount':ingredient[1], 'unit_of_measurement':ingredient[0].unit_of_measurement})
+        ret.append({'id':ingredient[0].id, 'name':ingredient[0].name, 'amount':int(ingredient[1]), 'unit_of_measurement':ingredient[0].unit_of_measurement})
     return ret
 
 def get_rating(recipe_id):
@@ -73,6 +73,7 @@ def get_user_dict(user_id):
 
 def get_detailed_recipe(recipe):
     recipe = deepcopy(recipe)
+    del recipe['data']['id']
     recipe.update(recipe['data'])
     del recipe['data']
     # pprint(recipe)

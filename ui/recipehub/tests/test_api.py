@@ -142,30 +142,8 @@ class TestAPIForks(TestCase):
         self.client.login(username=self.jude.username, password="password")
         resp = self.client.post('/api/v1/fork/', {
             'recipe_id': 1
-        })
-        self.assertEqual(resp.data['fork_of_id'], 1)
-
-    def test_list_forks(self):
-        self.test_fork()
-        resp = self.client.get('/api/v1/fork/', {
-            'recipe_id': 1
-        })
-        self.assertEqual(len(json.loads(resp.data)), 1)
-
-class TestAPIForks(TestCase):
-
-    def setUp(self):
-        insert_users()
-        insert_ingredients()
-        insert_recipes()
-        self.jude = User.objects.get(username="jude")
-
-    def test_fork(self):
-        self.client.login(username=self.jude.username, password="password")
-        resp = self.client.post('/api/v1/fork/', {
-            'recipe_id': 1
-        })
-        self.assertEqual(resp.data['fork_of_id'], 1)
+        }).data
+        self.assertEqual(resp['fork_of_id'], 1)
 
     def test_list_forks(self):
         self.test_fork()

@@ -1,3 +1,6 @@
+def empty_cluster():
+    truncate_query = requests.delete(RECIPE_POST_CLUSTER)
+    return truncate_query.text
 import random
 import requests
 import json
@@ -125,3 +128,7 @@ def process_data(data):
 def post_recipe(recipe):
     query1 = requests.post(RECIPE_POST_CLUSTER, data=json.dumps(recipe))
     return query1.text
+
+def empty_cluster():
+    truncate_query = requests.delete(RECIPE_POST_CLUSTER)
+    return truncate_query.text
