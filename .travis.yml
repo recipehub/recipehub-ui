@@ -17,5 +17,4 @@ install:
   - sleep 1
   - cd $TRAVIS_BUILD_DIR
   - pip install -r requirements.txt
-  - make test_verbose
-script: make test
+script: make test_verbose
