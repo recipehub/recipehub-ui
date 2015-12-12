@@ -17,5 +17,5 @@ install:
   - sleep 1
   - cd $TRAVIS_BUILD_DIR
   - pip install -r requirements.txt
-  - foreman run python manage.py test
+  - foreman run python manage.py test_verbose
 script: make test
