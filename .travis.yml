@@ -13,7 +13,7 @@ install:
   - psql -c 'create database recipehub_service;' -U postgres
   - cd recipehub-service
   - pip install -r requirements.txt
-  - python api.py > api.og &
+  - python api.py > api.og  2>&1 &
   - sleep 1
   - cd $TRAVIS_BUILD_DIR
   - pip install -r requirements.txt
