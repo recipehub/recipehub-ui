@@ -13,13 +13,12 @@
 
 ### Installation
 #### Install and run [recipehub-service](https://github.com/recipehub/recipehub-service)
-#### Dev
 
 * Clone this repository
 
     ```
     cd /your/projects/dir
-    git clone https://github.com/recipehub/ui recipehub-ui
+    git clone https://github.com/recipehub/recipehub-ui recipehub-ui
     cd recipehub-ui
     ```
 
@@ -44,12 +43,26 @@
 * Make a virtualenv
 
     ```
-    mkvirtualenv recipehub-ui-dev -a `pwd` && add2virtualenv `pwd`
+    mkvirtualenv recipehub-ui -a `pwd` && add2virtualenv `pwd`
     ```
-#### Test
+
+* Install requirements
 
     ```
-    make test
+    workon recipehub-ui
+    pip install -r requirements.txt
     ```
+
+### Run
+
+    foreman run python manage.py runserver
     
+#### Test
+
+    make test
+
     They are also run on Travis, https://travis-ci.org/recipehub/recipehub-ui
+
+### License
+
+GNU GPL v3
