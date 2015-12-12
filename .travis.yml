@@ -1,0 +1,18 @@
+language: python
+addons:
+  postgresql: "9.3"
+services:
+  - postgresql
+install:
+  - apt-get install rubygems
+  - gem install foreman
+  - cd ~
+  - git clone https://github.com/recipehub/recipehub-service
+  - psql -c 'create database recipehub_service;' -U postgres
+  - cd recipehub-service
+  - pip install -r requirements.txt
+  - python api.py &
+  - sleep 1
+  - cd $TRAVIS_BUILD_DIR
+  - pip install -r requirements.txt
+script: make test
