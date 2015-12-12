@@ -1,5 +1,19 @@
-# Installation
-## Dev
+## RecipeHub UI [![Build Status](https://travis-ci.org/recipehub/recipehub-ui.png)](https://travis-ci.org/recipehub/recipehub-ui)
+
+* Uses the recipehub-service API to store and version recipes
+* Implements social features like following, rating and commenting
+* Integrates elasticsearch
+* Exposes ReST API used by Angular App
+
+## Authors
+
+
+* [Ashwin Agrawal](https://github.com/ashwinagrawal1007): Models, utils and search
+* [Pratik Vyas](https://github.com/pdvyas): RecipeHub service integration, ReST API and Angular app.
+
+### Installation
+#### Install and run [recipehub-service](https://github.com/recipehub/recipehub-service)
+#### Dev
 
 * Clone this repository
 
@@ -32,3 +46,10 @@
     ```
     mkvirtualenv recipehub-ui-dev -a `pwd` && add2virtualenv `pwd`
     ```
+#### Test
+
+    ```
+    make test
+    ```
+    
+    They are also run on Travis, https://travis-ci.org/recipehub/recipehub-ui
