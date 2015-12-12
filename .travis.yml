@@ -7,7 +7,6 @@ addons:
 services:
   - postgresql
 install:
-  - apt-get install rubygems
   - gem install foreman
   - cd ~
   - git clone https://github.com/recipehub/recipehub-service
@@ -18,4 +17,5 @@ install:
   - sleep 1
   - cd $TRAVIS_BUILD_DIR
   - pip install -r requirements.txt
+  - foreman run python manage.py test
 script: make test
